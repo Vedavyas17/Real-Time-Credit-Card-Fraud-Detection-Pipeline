@@ -5,6 +5,15 @@ from json import loads
 client = MongoClient('localhost', 27017)
 db = client['capstoneproject']
 
+def readKafka():
+    consumer = KafkaConsumer(
+        'transactions-topic-verified',
+        bootstrap_servers=['18.211.252.152:9092'],
+        auto_offset_reset='earliest',
+        enable_auto_commit=True,
+        value_deserializer=lambda x: loads(x.decode('utf-8')))
+    return consumer
+
 def readMongoLookup():
     try:
         lookup_transaction = db.lookupTrans
